@@ -33,7 +33,8 @@ storm_observation<-filter_(tidy_ext_tracks,
 
 loc<-unique(c(storm_observation$longitude,storm_observation$latitude))
 
-### Since july 2018, using ggmap will fail unless you use Google Maps API Key. You will need to give Google your billing information, ### but can create maps for free: more infos at https://www.visibledata.co.uk/blog/2018/12/05/2018-12-05-using-ggmap-after-july-2018/ 
+# Since july 2018, using ggmap will fail unless you use Google Maps API Key. You will need to give Google your billing information, 
+# but you can create maps for free: more infos https://www.visibledata.co.uk/blog/2018/12/05/2018-12-05-using-ggmap-after-july-2018/ 
 
 Normal<-get_map(location=loc,
            zoom =6 , maptype = "toner-background") %>%
