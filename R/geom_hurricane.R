@@ -271,7 +271,6 @@ ggplot2:::ggname("geom_polygon",GeomPolygon$draw_panel(data0,
                 panel_scales, coord))
 })
 
-
 #' @title geom_hurricane
 #'
 #' @description Wrapper to the layer function for the GeomHurricane.
@@ -294,3 +293,36 @@ geom_hurricane<-function (mapping = NULL,
               params = list(na.rm = na.rm,
                             ...))
 }
+.............................................testing the code..........................................................................
+# Since july 2018, using ggmap will fail unless you use Google Maps API Key. You will need to give Google your billing information, 
+# but you can create maps for free: more infos https://www.visibledata.co.uk/blog/2018/12/05/2018-12-05-using-ggmap-after-july-2018/ 
+Normal<-get_map(location=loc,
+           zoom =6 , maptype = "toner-background") %>%
+        ggmap(extent = "device")+geom_hurricane(data=storm_observation,
+                                                mapping=aes(x=longitude,y=latitude,
+                                                            r=wind_radius,
+                                                            wind_speed=wind_speed,
+                                                            quadrant=quadrant,
+                                                            fill=as.factor(wind_speed),
+                                                            color=as.factor(wind_speed)))+
+        scale_color_manual(name = "Wind speed (kts)", 
+                           values = c("red", "orange", "yellow")) + 
+        scale_fill_manual(name = "Wind speed (kts)", 
+                          values = c("red", "orange", "yellow"))+
+        ggtitle("scale_radii=1.00")
+Half<-get_map(location=loc,
+            zoom =6 , maptype = "toner-background") %>%
+        ggmap(extent = "device")+geom_hurricane(data=storm_observation,
+                                                mapping=aes(x=longitude,y=latitude,
+                                                            r=wind_radius,
+                                                            wind_speed=wind_speed,
+                                                            quadrant=quadrant,
+                                                            fill=as.factor(wind_speed),
+                                                            color=as.factor(wind_speed),
+                                                            scale_radii=0.5))+
+        scale_color_manual(name = "Wind speed (kts)", 
+                           values = c("red", "orange", "yellow")) + 
+        scale_fill_manual(name = "Wind speed (kts)", 
+                          values = c("red", "orange", "yellow")) +
+        ggtitle("scale_radii = 50%")
+gridExtra::grid.arrange(Normal,Half,ncol=2,nrow=1)
